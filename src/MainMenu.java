@@ -78,60 +78,57 @@ public class MainMenu
 
     public static GregorianCalendar retriveDate()
     {
-       
-        int inHours = -1;
-        int inMinutes = -1;
+
         String inDate = "";
 
-      /*  while (!validateYear(inYear))
-        {
-            System.out.println("Please Enter a Year:");
-            inYear = retrieveIntFromUser();
-            if (!validateYear(inYear))
-            {
-                System.out.println("Invalid year input(Year must be current year or above and in format YYYY)");
-            }
-        }
-
-        while (!validateMonth(inMonth))
-        {
-            System.out.println("Please Enter a Month:");
-            inMonth = retrieveIntFromUser();
-            if (!validateMonth(inMonth))
-            {
-                System.out.println("Invalid Month input(Month must be between 1 to 12 and in format MM or M)");
-            }
-        }
-
-        while (!validateDay(inYear, inMonth, inDay))
-        {
-            System.out.println("Please Enter a Day:");
-            inDay = retrieveIntFromUser();
-            if (!validateDay(inYear, inMonth, inDay))
-            {
-                System.out.println("Invalid day input(Day must be a valid day for the month in the format DD or D)");
-            }
-        }*/
+        /*
+         * while (!validateYear(inYear)) {
+         * System.out.println("Please Enter a Year:"); inYear =
+         * retrieveIntFromUser(); if (!validateYear(inYear)) {
+         * System.out.println(
+         * "Invalid year input(Year must be current year or above and in format YYYY)"
+         * ); } }
+         * 
+         * while (!validateMonth(inMonth)) {
+         * System.out.println("Please Enter a Month:"); inMonth =
+         * retrieveIntFromUser(); if (!validateMonth(inMonth)) {
+         * System.out.println(
+         * "Invalid Month input(Month must be between 1 to 12 and in format MM or M)"
+         * ); } }
+         * 
+         * while (!validateDay(inYear, inMonth, inDay)) {
+         * System.out.println("Please Enter a Day:"); inDay =
+         * retrieveIntFromUser(); if (!validateDay(inYear, inMonth, inDay)) {
+         * System.out.println(
+         * "Invalid day input(Day must be a valid day for the month in the format DD or D)"
+         * ); } }
+         */
         Date getDate = new Date();
+        Time getTime = new Time();
+        Hours getHours = new Hours();
+        Minutes getMinutes = new Minutes();
         boolean validYear = false;
         boolean validMonth = false;
         boolean validDay = false;
+        boolean validTime = false;
 
-        while(!validYear){
-        System.out.println("Please Enter a Year:");
-       int inYear = retrieveIntFromUser();
-        try
+        while (!validYear)
         {
-            getDate.setYear(inYear);
-            validYear = true;
+            System.out.println("Please Enter a Year:");
+            int inYear = retrieveIntFromUser();
+            try
+            {
+                getDate.setYear(inYear);
+                validYear = true;
+            }
+            catch (Exception e)
+            {
+                System.out.println("Invalid year input(Year must be current year or above and in format YYYY)");
+                validYear = false;
+            }
         }
-        catch (Exception e)
+        while (!validMonth)
         {
-            System.out.println("Invalid year input(Year must be current year or above and in format YYYY)");
-            validYear = false;
-        }
-        }
-        while(!validMonth){
             System.out.println("Please Enter a Month:");
             int inMonth = retrieveIntFromUser();
             try
@@ -144,8 +141,9 @@ public class MainMenu
                 System.out.println("Invalid Month input(Month must be between 1 to 12 and in format MM or M)");
                 validMonth = false;
             }
-            }
-        while(!validDay){
+        }
+        while (!validDay)
+        {
             System.out.println("Please Enter a Day:");
             int inDay = retrieveIntFromUser();
             try
@@ -158,16 +156,56 @@ public class MainMenu
                 System.out.println("Invalid day input(Day must be a valid day for the month in the format DD or D)");
                 validDay = false;
             }
+        }
+        while (!validTime)
+        {
+            boolean validHours = false;
+            boolean validMinutes = false;
+            while (!validHours)
+            {
+                System.out.println("Please Enter the Hours of Event Start Time:");
+                int inHours = retrieveIntFromUser();
+                try
+                {
+                    getHours.setHours(inHours);
+                    validHours = true;
+                }
+                catch (Exception e)
+                {
+                    System.out
+                            .println("Invalid day input(Day must be a valid day for the month in the format DD or D)");
+                    validHours = false;
+                }
             }
+            while (!validMinutes)
+            {
+                System.out.println("Please Enter the Mintutes of Event Start Time:");
+                int inMinutes = retrieveIntFromUser();
+                try
+                {
+                    getMinutes.setMinutes(inMinutes);
+                    validMinutes = true;
+                }
+                catch (Exception e)
+                {
+                    System.out
+                            .println("Invalid day input(Day must be a valid day for the month in the format DD or D)");
+                    validMinutes = false;
+                }
+            }
+            validTime =(validHours && validMinutes);
+        }
 
         // Month -1 as GregorianCaladar months start from 0 not 1
-        GregorianCalendar date = new GregorianCalendar(getDate.getYear(), (getDate.getMonth() - 1), getDate.getDay());
+        // LectureEvent event = new LectureEvent(date);
+        GregorianCalendar date = new GregorianCalendar(getDate.getYear(), (getDate.getMonth() - 1), getDate.getDay(),
+                getHours.getHours(), getMinutes.getMinutes());
+        // GregorianCalendar date = new GregorianCalendar();
+        // date.set(getTime);
         return date;
 
     }
 
-    
-    
     public static boolean validateHours(int inHours)
     {
         boolean valid = false;
