@@ -32,8 +32,9 @@ public String toString()
 }
 public void printAlert()
 {
-    // TODO Auto-generated method stub
+    System.out.println("test");
     
 }
+
 }
 

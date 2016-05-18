@@ -24,16 +24,6 @@ public class UniEvent
 
     }
 
-    public boolean equals(Object inObj)
-    {
-        boolean same = false;
-        if (inObj instanceof UniEvent)
-        {
-            UniEvent inUniEvent = (UniEvent) inObj;
-            same = datetime.equals(inUniEvent.getDateTime()) && unit.equals(inUniEvent.getUnit());
-        }
-        return same;
-    }
 
     public GregorianCalendar getDateTime()
     {
@@ -60,4 +50,5 @@ public class UniEvent
    
         return ("This Event is at: " + datetime.getTime() + "For Unit: " + unit );
     }
+    
 }

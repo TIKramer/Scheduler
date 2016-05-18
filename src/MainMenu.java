@@ -2,9 +2,15 @@ import java.util.*;
 
 public class MainMenu
 {
-    public static void mainMenu()
-    {
-        
+ private UniEvent events[];
+  
+  public MainMenu(){
+
+  events = new UniEvent[10];
+  }
+
+   public void mainMenu()
+    {  
         Scanner sc = new Scanner(System.in);
         int selection = -1;
         int numOfSelectionsAboveZero = 3;
@@ -27,20 +33,47 @@ public class MainMenu
                 addEventMenu();
                 break;
             case 2:
-                // displayEvents();
+                 displayEvents();
                 break;
             case 3:
-                // printAlert();
+                 printAlert();
                 break;
             default:
                 // exit();
                 break;
         }
     }
-
-    public static void addEventMenu()
+    public void  displayEvents()
     {
-        UniEvent[] events = new UniEvent[10];
+    
+    for(int i = 0; i < events.length; i++){
+     if(!(events[i] == null)){
+      System.out.println(events[i]);
+      }
+    }
+    }
+   public void printAlert()
+   {
+    for(int i = 0; i < events.length; i++)
+    {
+       if (events[i] != null) 
+       {
+          if(events[i] instanceof LectureEvent)
+          {
+               
+            LectureEvent event = (LectureEvent) events[i];
+             event.printAlert();
+            }
+              else if(events[i] instanceof TutorialEvent)
+              {
+	        TutorialEvent event = (TutorialEvent) events[i];
+                 event.printAlert();
+                }
+          }
+     }
+    }
+    public void addEventMenu()
+    {
         Scanner sc = new Scanner(System.in);
         int selection = -1;
         int numOfSelectionsAboveZero = 2;
@@ -66,12 +99,18 @@ public class MainMenu
                 boolean validDay = false;
                 GregorianCalendar date = retriveDate();
                 LectureEvent event = new LectureEvent("4th Hall", date);
-                
-                events[1] = event;
-                System.out.println(events[1].toString());
+                System.out.println("Events[0]: " +  events[1]);
+          
+                events[0] = event;
+               
+                mainMenu();
+               // System.out.println(events[1].toString());
                 break;
             case 2:
-                TutorialEvent event2 = new TutorialEvent();
+                GregorianCalendar date2 = retriveDate();
+                TutorialEvent event2 = new TutorialEvent(22, date2);
+                events[0] = event2;
+                mainMenu();
                 System.out.println(event2);
                 break;
             default:
@@ -80,7 +119,7 @@ public class MainMenu
         }
     }
 
-    public static GregorianCalendar retriveDate()
+    public GregorianCalendar retriveDate()
     {  
         Date getDate = new Date();
         Hours getHours = new Hours();
@@ -181,27 +220,7 @@ public class MainMenu
 
     }
 
-    public static boolean validateHours(int inHours)
-    {
-        boolean valid = false;
-        if (inHours >= 0 && inHours < 24)
-        {
-            valid = true;
-        }
-        return valid;
-    }
-
-    public static boolean validateMinutes(int inMinutes)
-    {
-        boolean valid = false;
-        if (inMinutes >= 0 && inMinutes < 60)
-        {
-            valid = true;
-        }
-        return valid;
-    }
-
-    public static boolean validateSelection(int inSelection, int maxSelctionValue)
+    public boolean validateSelection(int inSelection, int maxSelctionValue)
     {
         boolean valid = false;
         if (inSelection >= 0 && inSelection <= maxSelctionValue)
@@ -211,7 +230,7 @@ public class MainMenu
         return valid;
     }
 
-    public static int retrieveIntFromUser()
+    public int retrieveIntFromUser()
     {
         Scanner sc = new Scanner(System.in);
         int inSelection = -1;
