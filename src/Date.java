@@ -7,22 +7,25 @@ public class Date
     private int month;
     private int day;
 
-    
-public Date(){
-    GregorianCalendar currentDate = new GregorianCalendar();
-    year = currentDate.get(Calendar.YEAR);
-    month = currentDate.get(Calendar.MONTH);
-    day = currentDate.get(Calendar.DAY_OF_MONTH);
-}
-
-public Date(int inYear, int inMonth, int inDay){
-    if(validateYear(inYear) && validateMonth(inMonth) && validateDay(inYear, inMonth, inDay)){
-        year = inYear;
-        month = inMonth;
-        day = inDay;
+    public Date()
+    {
+        GregorianCalendar currentDate = new GregorianCalendar();
+        year = currentDate.get(Calendar.YEAR);
+        month = currentDate.get(Calendar.MONTH);
+        day = currentDate.get(Calendar.DAY_OF_MONTH);
     }
-    
-}
+
+    public Date(int inYear, int inMonth, int inDay)
+    {
+        if (validateYear(inYear) && validateMonth(inMonth) && validateDay(inYear, inMonth, inDay))
+        {
+            year = inYear;
+            month = inMonth;
+            day = inDay;
+        }
+
+    }
+
     public int getYear()
     {
         return year;
@@ -30,12 +33,14 @@ public Date(int inYear, int inMonth, int inDay){
 
     public void setYear(int inYear)
     {
-        if(validateYear(inYear)){
-        year = inYear;
+        if (validateYear(inYear))
+        {
+            year = inYear;
         }
         else
         {
-            throw new IllegalArgumentException("Invalid year input(Year must be current year or above and in format YYYY)");
+            throw new IllegalArgumentException(
+                    "Invalid year input(Year must be current year or above and in format YYYY)");
         }
     }
 
@@ -46,13 +51,15 @@ public Date(int inYear, int inMonth, int inDay){
 
     public void setMonth(int inMonth)
     {
-        if(validateMonth(inMonth)){
+        if (validateMonth(inMonth))
+        {
             month = inMonth;
-            }
-            else
-            {
-                throw new IllegalArgumentException("Invalid year input(Year must be current year or above and in format YYYY)");
-            }
+        }
+        else
+        {
+            throw new IllegalArgumentException(
+                    "Invalid year input(Year must be current year or above and in format YYYY)");
+        }
     }
 
     public int getDay()
@@ -68,7 +75,8 @@ public Date(int inYear, int inMonth, int inDay){
         }
         else
         {
-            throw new IllegalArgumentException("Invalid day input(Day must be a valid day for the month in the format DD or D)");
+            throw new IllegalArgumentException(
+                    "Invalid day input(Day must be a valid day for the month in the format DD or D)");
         }
     }
 
@@ -137,13 +145,11 @@ public Date(int inYear, int inMonth, int inDay){
         }
         return valid;
     }
-    
+
     public String toString()
     {
-   
+
         return (year + "/" + month + "/" + day);
     }
-    
-    
 
 }

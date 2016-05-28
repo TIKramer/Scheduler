@@ -1,25 +1,48 @@
 import java.util.*;
 
+/***************************************************************************
+ * Author: Thomas Kramer                                                   *
+ * Purpose: The MainMenu of the program allows the user to make choices and*
+ *          interact with the program                                      *
+ * Date: 15/04/2016 3:23pm                                                 *
+ **************************************************************************/
 public class MainMenu
 {
- private UniEvent events[];
-  
-  public MainMenu(){
+    private EventList events;
+    private UserInput input;
 
-  events = new UniEvent[10];
-  }
+    /*****************************************************************************
+    * Default Constructor: Purpose: To construct a default object of MainMenu    *
+    * Date: 22/05/2016 9:31pm                                                    *
+    * IMPORT: none                                                               *
+    * EXPORT: address of new MainMenu object                                     *
+    * ASSERTION: default EventList and default UserInput is the                  *
+    *            default state for MainMenu                                      *
+    *****************************************************************************/
+    public MainMenu()
+    {
+        events = new EventList();
+        input = new UserInput();
+    }
 
-   public void mainMenu()
-    {  
-        Scanner sc = new Scanner(System.in);
+    //PRIVATE SUBMODULES:
+    /************************************************************************
+    *SUBMODULE: mainMenu                                                    *
+    * Purpose: A Main Menu in console that display options to the user      *
+    * Date: 22/05/2016 9:31pm                                               *                            
+    *IMPORT: none                                                           *
+    *EXPORT: none                                                           *
+    *ASSERTION:                                                             *
+    ************************************************************************/
+    public void mainMenu()
+    {
+
         int selection = -1;
         int numOfSelectionsAboveZero = 3;
         while (!validateSelection(selection, numOfSelectionsAboveZero))
         {
-            System.out.println("Please enter: " + "\n\t 1: To Add an Event" + "\n\t 2: To Display Events"
+            selection = input.readInt("Please enter: " + "\n\t 1: To Add an Event" + "\n\t 2: To Display Events"
                     + "\n\t 3: To Print Alert" + "\n\t 0: To Exit");
-            selection = retrieveIntFromUser();
-
             if (!validateSelection(selection, numOfSelectionsAboveZero))
             {
                 System.out.println("Invalid input, must enter a interger value between 0 and "
@@ -31,59 +54,39 @@ public class MainMenu
         {
             case 1:
                 addEventMenu();
+                mainMenu();
                 break;
             case 2:
-                 displayEvents();
+                events.displayEvents();
+                mainMenu();
                 break;
             case 3:
-                 printAlert();
+                events.printAlert();
+                mainMenu();
                 break;
             default:
-                // exit();
+                // exit;
                 break;
         }
     }
-    public void  displayEvents()
+
+    /************************************************************************
+    *SUBMODULE: addEventMenu                                                *
+    * Purpose: A Main Menu in console that display options to the user      *
+    *          for adding a new event or returning to the main menu         *
+    * Date: 22/05/2016 9:31pm                                               *                            
+    *IMPORT: none                                                           *
+    *EXPORT: none                                                           *
+    *ASSERTION:                                                             *
+    ************************************************************************/
+    private void addEventMenu()
     {
-    
-    for(int i = 0; i < events.length; i++){
-     if(!(events[i] == null)){
-      System.out.println(events[i]);
-      }
-    }
-    }
-   public void printAlert()
-   {
-    for(int i = 0; i < events.length; i++)
-    {
-       if (events[i] != null) 
-       {
-          if(events[i] instanceof LectureEvent)
-          {
-               
-            LectureEvent event = (LectureEvent) events[i];
-             event.printAlert();
-            }
-              else if(events[i] instanceof TutorialEvent)
-              {
-	        TutorialEvent event = (TutorialEvent) events[i];
-                 event.printAlert();
-                }
-          }
-     }
-    }
-    public void addEventMenu()
-    {
-        Scanner sc = new Scanner(System.in);
         int selection = -1;
         int numOfSelectionsAboveZero = 2;
-
         while (!validateSelection(selection, numOfSelectionsAboveZero))
         {
-            System.out.println("Please enter: " + "\n\t 1: To Add a Lecture Event" + "\n\t 2: To Add a Tutorial Event"
-                    + "\n\t 0: To Return To Main Menu");
-            selection = retrieveIntFromUser();
-
+            selection = input.readInt("Please enter: " + "\n\t 1: To Add a Lecture Event"
+                    + "\n\t 2: To Add a Tutorial Event" + "\n\t 0: To Return To Main Menu");
             if (!validateSelection(selection, numOfSelectionsAboveZero))
             {
                 System.out.println("Invalid input, must enter a interger value between 0 and "
@@ -91,27 +94,13 @@ public class MainMenu
             }
 
         }
-
         switch (selection)
         {
-
             case 1:
-                boolean validDay = false;
-                GregorianCalendar date = retriveDate();
-                LectureEvent event = new LectureEvent("4th Hall", date);
-                System.out.println("Events[0]: " +  events[1]);
-          
-                events[0] = event;
-               
-                mainMenu();
-               // System.out.println(events[1].toString());
+                createLectureEvent();
                 break;
             case 2:
-                GregorianCalendar date2 = retriveDate();
-                TutorialEvent event2 = new TutorialEvent(22, date2);
-                events[0] = event2;
-                mainMenu();
-                System.out.println(event2);
+                createTutorialEvent();
                 break;
             default:
                 mainMenu();
@@ -119,8 +108,54 @@ public class MainMenu
         }
     }
 
-    public GregorianCalendar retriveDate()
-    {  
+    /************************************************************************
+    *SUBMODULE: createLectureEvent                                          *
+    * Purpose: creates a new LectureEvent object from user input and        *
+    *          adds to the events array.                                    *
+    * Date: 22/05/2016 9:31pm                                               *                            
+    *IMPORT: none                                                           *
+    *EXPORT: none                                                           *
+    *ASSERTION:                                                             *
+    ************************************************************************/
+    private void createLectureEvent()
+    {
+        String unit = input.readString("Please enter the unit for this event:");
+        String lectureHall = input.readString("Please enter the lecture hall:");
+        GregorianCalendar date = generateDate();
+        LectureEvent event = new LectureEvent(date, unit, lectureHall);
+        events.addEvent(event);
+    }
+
+    /************************************************************************
+    *SUBMODULE: createTutorialEvent                                         *
+    * Purpose: creates a new TutorialEvent object from user input and       *
+    *          adds to the events array.                                    *
+    * Date: 22/05/2016 9:31pm                                               *                            
+    *IMPORT: none                                                           *
+    *EXPORT: none                                                           *
+    *ASSERTION:                                                             *
+    ************************************************************************/
+    private void createTutorialEvent()
+    {
+        GregorianCalendar date = generateDate();
+        String unit = input.readString("Please enter the unit for this event:");
+        int classroom = input.readInt("Please enter a Classroom number:");
+        TutorialEvent event = new TutorialEvent(date, unit, classroom);
+        events.addEvent(event);
+    }
+
+    /************************************************************************
+    *SUBMODULE: generateDate                                                *
+    * Purpose: creates a valid date from user input if and fields are       *
+    *          invalid the program will keep looping until valid input      *
+    *          is entered.                                                  *
+    * Date: 22/05/2016 9:31pm                                               *                            
+    *IMPORT: none                                                           *
+    *EXPORT: date (GregorianCalendar)                                       *
+    *ASSERTION:                                                             *
+    ************************************************************************/
+    private GregorianCalendar generateDate()
+    {
         Date getDate = new Date();
         Hours getHours = new Hours();
         Minutes getMinutes = new Minutes();
@@ -131,47 +166,41 @@ public class MainMenu
 
         while (!validYear)
         {
-            System.out.println("Please Enter a Year:");
-            int inYear = retrieveIntFromUser();
+            int inYear = input.readInt("Please Enter a Year:");
             try
             {
                 getDate.setYear(inYear);
                 validYear = true;
             }
-            catch (Exception e)
+            catch (IllegalArgumentException e)
             {
-                System.out.println("Invalid year input(Year must be current year or above and in format YYYY)");
-                validYear = false;
+                System.out.println(e.getMessage());
             }
         }
         while (!validMonth)
         {
-            System.out.println("Please Enter a Month:");
-            int inMonth = retrieveIntFromUser();
+            int inMonth = input.readInt("Please Enter a Month:");
             try
             {
                 getDate.setMonth(inMonth);
                 validMonth = true;
             }
-            catch (Exception e)
+            catch (IllegalArgumentException e)
             {
-                System.out.println("Invalid Month input(Month must be between 1 to 12 and in format MM or M)");
-                validMonth = false;
+                System.out.println(e.getMessage());
             }
         }
         while (!validDay)
         {
-            System.out.println("Please Enter a Day:");
-            int inDay = retrieveIntFromUser();
+            int inDay = input.readInt("Please Enter a Day:");
             try
             {
                 getDate.setDay(getDate.getYear(), getDate.getMonth(), inDay);
                 validDay = true;
             }
-            catch (Exception e)
+            catch (IllegalArgumentException e)
             {
-                System.out.println("Invalid day input(Day must be a valid day for the month in the format DD or D)");
-                validDay = false;
+                System.out.println(e.getMessage());
             }
         }
         while (!validTime)
@@ -180,37 +209,31 @@ public class MainMenu
             boolean validMinutes = false;
             while (!validHours)
             {
-                System.out.println("Please Enter the Hours of Event Start Time:");
-                int inHours = retrieveIntFromUser();
+                int inHours = input.readInt("Please Enter the Hours of Event Start Time:");
                 try
                 {
                     getHours.setHours(inHours);
                     validHours = true;
                 }
-                catch (Exception e)
+                catch (IllegalArgumentException e)
                 {
-                    System.out
-                            .println("Invalid day input(Day must be a valid day for the month in the format DD or D)");
-                    validHours = false;
+                    System.out.println(e.getMessage());
                 }
             }
             while (!validMinutes)
             {
-                System.out.println("Please Enter the Mintutes of Event Start Time:");
-                int inMinutes = retrieveIntFromUser();
+                int inMinutes = input.readInt("Please Enter the Mintutes of Event Start Time:");
                 try
                 {
                     getMinutes.setMinutes(inMinutes);
                     validMinutes = true;
                 }
-                catch (Exception e)
+                catch (IllegalArgumentException e)
                 {
-                    System.out
-                            .println("Invalid day input(Day must be a valid day for the month in the format DD or D)");
-                    validMinutes = false;
+                    System.out.println(e.getMessage());
                 }
             }
-            validTime =(validHours && validMinutes);
+            validTime = (validHours && validMinutes);
         }
 
         // Month -1 as GregorianCaladar months start from 0 not 1
@@ -219,8 +242,15 @@ public class MainMenu
         return date;
 
     }
-
-    public boolean validateSelection(int inSelection, int maxSelctionValue)
+     /************************************************************************
+     *SUBMODULE: validateSelection                                           *
+     * Purpose: validates if the user selection is within the max value      *
+     * Date: 22/05/2016 9:31pm                                               *                            
+     *IMPORT: inSelection (int), maxSelctionValue (int)                      *
+     *EXPORT: valid (boolean)                                                *
+     *ASSERTION:                                                             *
+     ************************************************************************/
+    private boolean validateSelection(int inSelection, int maxSelctionValue)
     {
         boolean valid = false;
         if (inSelection >= 0 && inSelection <= maxSelctionValue)
@@ -230,19 +260,4 @@ public class MainMenu
         return valid;
     }
 
-    public int retrieveIntFromUser()
-    {
-        Scanner sc = new Scanner(System.in);
-        int inSelection = -1;
-        try
-        {
-            inSelection = sc.nextInt();
-        }
-        catch (Exception e)
-        {
-            System.out.println("Invalid value");
-            sc.next();
-        }
-        return inSelection;
-    }
 }
