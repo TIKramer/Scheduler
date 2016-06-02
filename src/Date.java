@@ -1,12 +1,26 @@
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
+/****************************************************************
+ * Author: Thomas Kramer                                        *
+ * Purpose: Class that holds a date (year/month/day)            *
+ * Date: 20/05/2016 6:10pm                                      *
+ ***************************************************************/
 public class Date
 {
     private int year;
     private int month;
     private int day;
 
+    /********************************************************************
+     *Default Constructor:                                               *
+     *Purpose: To construct a default object of Date                     *
+     *Date: 20/05/2016 6:10pm                                            *
+     *IMPORT: none                                                       *
+     *EXPORT: address of new Date object                                 *
+     *ASSERTION: the current year, month and day is default the state of *
+     *           Date                                               *       
+     ********************************************************************/
     public Date()
     {
         GregorianCalendar currentDate = new GregorianCalendar();
@@ -15,6 +29,14 @@ public class Date
         day = currentDate.get(Calendar.DAY_OF_MONTH);
     }
 
+    /****************************************************************************************
+    * Alternate #1 Constructor:                                                             *
+    * Purpose: To construct a object of Date using a imported values(inYear, inMonth, inDay)*
+    * Date: 20/05/2016 6:10pm                                                              *
+    * IMPORT: inYear (int), inMonth (int), inDay (int)                                      *
+    * EXPORT: address of new Date object                                                    *
+    * ASSERTION:Creates the object if the imports are valid and FAILS otherwise             *
+    ****************************************************************************************/
     public Date(int inYear, int inMonth, int inDay)
     {
         if (validateYear(inYear) && validateMonth(inMonth) && validateDay(inYear, inMonth, inDay))
@@ -23,14 +45,37 @@ public class Date
             month = inMonth;
             day = inDay;
         }
+        else
+        {
+            throw new IllegalArgumentException("Invalid Import Values");
+        }
 
     }
 
-    public int getYear()
+    /*****************************************************************************
+    *Copy Constructor:                                                           *
+    *Purpose: To create a new object with the same object state as the import    *
+    *Date: 20/05/2016 6:10pm                                                    *
+    *IMPORT: inDate (Date)                                                       *
+    *EXPORT: address of new Date object                                          *
+    *ASSERTION: Creates an object with an identical object state as the import.  *
+    *****************************************************************************/
+    public Date(Date inDate)
     {
-        return year;
+        year = inDate.getYear();
+        month = inDate.getMonth();
+        day = inDate.getDay();
     }
 
+    // MUTATORS
+    /**********************************************************************
+    * SUBMODULE: setYear                                                  *
+    * Purpose: To change/set year of the object to the value imported     *
+    * Date: 20/05/2016 6:10pm                                             *
+    * IMPORT: inYear (int)                                                *
+    * EXPORT: none                                                        * 
+    * ASSERTION: sets year to inYear if valid and FAILS otherwise         *
+    **********************************************************************/
     public void setYear(int inYear)
     {
         if (validateYear(inYear))
@@ -44,11 +89,14 @@ public class Date
         }
     }
 
-    public int getMonth()
-    {
-        return month;
-    }
-
+    /**********************************************************************
+    * SUBMODULE: setMonth                                                 *
+    * Purpose: To change/set month of the object to the value imported    *
+    * Date: 20/05/2016 6:10pm                                               *
+    * IMPORT: inMonth (int)                                               *
+    * EXPORT: none                                                        * 
+    * ASSERTION: sets month to inMonth if valid and FAILS otherwise       *
+    **********************************************************************/
     public void setMonth(int inMonth)
     {
         if (validateMonth(inMonth))
@@ -58,14 +106,18 @@ public class Date
         else
         {
             throw new IllegalArgumentException(
-                    "Invalid year input(Year must be current year or above and in format YYYY)");
+                    "Invalid year input(Year must be current year or above(within 100 years) and in format YYYY)");
         }
     }
 
-    public int getDay()
-    {
-        return day;
-    }
+    /**********************************************************************
+     * SUBMODULE: setDay                                                   *
+     * Purpose: To change/set day of the object to the value imported      *
+     * Date: 20/05/2016 6:10pm                                                *
+     * IMPORT: inYear (int), inMonth (int), inDay (int)                    *
+     * EXPORT: none                                                        * 
+     * ASSERTION: sets day to inDay if valid and FAILS otherwise           *
+     **********************************************************************/
 
     public void setDay(int inYear, int inMonth, int inDay)
     {
@@ -80,18 +132,76 @@ public class Date
         }
     }
 
+    // ACCESSORS
+    /************************************************************
+    * SUBMODULE: getYear                                        *
+    * Purpose: To return the value of year from the object      *
+    * Date: 20/05/2016 6:10pm                                   *
+    * IMPORT: none                                              *
+    * EXPORT: year                                              *
+    * ASSERTION: returns year                                   *
+    ************************************************************/
+    public int getYear()
+    {
+        return year;
+    }
+
+    /************************************************************
+    * SUBMODULE: getMonth                                       *
+    * Purpose: To return the value of month from the object     *
+    * Date: 20/05/2016 6:10pm                                   *
+    * IMPORT: none                                              *
+    * EXPORT: month                                             *
+    * ASSERTION: returns month                                  *
+    ************************************************************/
+
+    public int getMonth()
+    {
+        return month;
+    }
+
+    /************************************************************
+    * SUBMODULE: getDay                                         *
+    * Purpose: To return the value of day from the object       *
+    * Date: 20/05/2016 6:10pm                                   *
+    * IMPORT: none                                              *
+    * EXPORT: month                                             *
+    * ASSERTION: returns day                                    *
+    ************************************************************/
+
+    public int getDay()
+    {
+        return day;
+    }
+
+    //PRIVATE SUBMODULES:
+    /************************************************************************
+    *SUBMODULE: validateYear                                                *
+    * Purpose: To check if inYear is a valid year                           *
+    * Date: 20/05/2016 6:10pm                                               *                            
+    *IMPORT: inYear (int)                                                   *
+    *EXPORT: valid (boolean)                                                *
+    *ASSERTION: inYear must be the current year or above(within 100 years)  *
+    ************************************************************************/
     private static boolean validateYear(int inYear)
     {
         boolean valid = false;
-        GregorianCalendar currentDate = new GregorianCalendar();
-        if (inYear >= currentDate.get(Calendar.YEAR))
+        Date currentDate = new Date();
+        if (inYear >= currentDate.getYear() && inYear <= (currentDate.getYear() + 100))
         {
             valid = true;
         }
         return valid;
     }
-
-    // Will have to formate month to add extra 0
+    //PRIVATE SUBMODULES:
+    /************************************************************************
+    *SUBMODULE: validateMonth                                               *
+    * Purpose: To check if inMonth is a valid month                         *
+    * Date: 20/05/2016 6:10pm                                               *                            
+    *IMPORT: inMonth (int)                                                  *
+    *EXPORT: valid (boolean)                                                *
+    *ASSERTION: inMonth must be the current month or greater else fail      *
+    ************************************************************************/
     private static boolean validateMonth(int inMonth)
     {
         boolean valid = false;
@@ -101,7 +211,14 @@ public class Date
         }
         return valid;
     }
-
+    /************************************************************************
+    *SUBMODULE: validateDay                                                 *
+    * Purpose: To check if inDay is a valid day                             *
+    * Date: 22/05/2016 9:31pm                                               *                            
+    *IMPORT: inYear (int), inMonth (int), inYear (int)                      *
+    *EXPORT: valid (boolean)                                                *
+    *ASSERTION: inDay must be current day or greater else fail              *
+    ************************************************************************/
     private static boolean validateDay(int inYear, int inMonth, int inDay)
     {
         boolean valid = false;
@@ -126,7 +243,7 @@ public class Date
             case 2:
                 GregorianCalendar validationCalandar = new GregorianCalendar();
                 boolean isLeapYear = validationCalandar.isLeapYear(inYear);
-                if (isLeapYear == true)
+                if (isLeapYear)
                 {
                     numOfDaysInMonth = 29;
                 }
@@ -135,21 +252,50 @@ public class Date
                     numOfDaysInMonth = 28;
                 }
             default:
-                // exit();
+                // exit;
                 break;
         }
 
         if (inDay >= 1 && inDay <= numOfDaysInMonth)
         {
-            valid = true;
+        
+            valid = true;  
         }
         return valid;
     }
-
+    /********************************************************************
+     * SUBMODULE: toString                                              * 
+     * Purpose: To return a string of the Date object                   *
+     * Date: 20/05/2016 6:10pm                                          *
+     * IMPORT: none                                                     *
+     * EXPORT: str                                                      *
+     * ASSERTION:                                                       *
+     *******************************************************************/
     public String toString()
     {
 
         return (year + "/" + month + "/" + day);
     }
+    
+    /********************************************************************
+     * SUBMODULE: equals                                                *
+     * Purpose: To compare if two Hours objects are the same            *
+     * Date: 20/05/2016 6:10pm                                          *
+     * IMPORT: inObj (Object)                                           *
+     * EXPORT: same                                                     *
+     * ASSERTION:Two Date objects are the same if they have the same    *
+     *           year, Month and day.                                   *
+     ********************************************************************/
+    public boolean equals(Object inObj)
+    {
+        boolean same = false;
+        if (inObj instanceof Date)
+        {
+            Date inDate = (Date) inObj;
+            same = (year == inDate.getYear() && month == inDate.getMonth() && day == inDate.getDay());
+        }
+        return same;
+    }
+ 
 
 }

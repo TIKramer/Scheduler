@@ -54,17 +54,17 @@ public class Time
      * Purpose: To construct a object of Time using the difference between         *
      *          two GreorianCalendars(milliseconds)                                *
      * Date: 22/05/2016 9:31pm                                                     *
-     * IMPORT: inMilliseconds (long)                                               *
+     * IMPORT: inTime1 (Time), inTime2 (time)                                      *
      * EXPORT: address of new Time object                                          *
      * ASSERTION:Creates the object if the imports are valid and FAILS otherwise   *
      ******************************************************************************/
-    public Time(Time inTime, Time inTime2)
+    public Time(Time inTime1, Time inTime2)
     {
-        weeks = inTime.getWeeks() - inTime2.getWeeks();
-        days = inTime.getDays() - inTime2.getDays();
-        hours = new Hours (inTime.getHours().getHours() - inTime2.getHours().getHours());
-        minutes = new Minutes (inTime.getMinutes().getMinutes() - inTime2.getMinutes().getMinutes());
-        seconds = inTime.getSeconds() - inTime2.getSeconds();
+        weeks = inTime1.getWeeks() - inTime2.getWeeks();
+        days = inTime1.getDays() - inTime2.getDays();
+        hours = new Hours (inTime1.getHours().getHours() - inTime2.getHours().getHours());
+        minutes = new Minutes (inTime1.getMinutes().getMinutes() - inTime2.getMinutes().getMinutes());
+        seconds = inTime1.getSeconds() - inTime2.getSeconds();
         
     }
     
@@ -88,8 +88,8 @@ public class Time
     * Purpose: To create a new object with the same object state as the import *
     * Date: 22/05/2016 9:31pm                                                  *
     * IMPORT: inTime (Time)                                                    *
-    * EXPORT: address of new Time object ASSERTION: Creates an object with an  *
-    *         identical object state as the import.                            *
+    * EXPORT: address of new Time object 
+    * ASSERTION: Creates an object with an identical object state as the import.                            *
     ***************************************************************************/
     public Time(Time inTime)
     {
@@ -298,8 +298,8 @@ public class Time
     * SUBMODULE: millisecondsToWeeks                            *
     * Purpose: To get the number of weeks from inMilliseconds   *
     * Date: 22/05/2016 9:31pm                                   *
-    * IMPORT: none                                              *
-    * EXPORT: weeks                                             *
+    * IMPORT: inMilliseconds (long)                                              *
+    * EXPORT: weeks (int)                                         *
     * ASSERTION: returns weeks                                  *
     ************************************************************/
     private int millisecondsToWeeks(long inMilliseconds)
@@ -317,7 +317,7 @@ public class Time
     * SUBMODULE: millisecondsToDays                            *
     * Purpose: To get the number of days from inMilliseconds   * 
     * Date: 22/05/2016 9:31pm                                  *
-    * IMPORT: none                                             *
+    * IMPORT: inMilliseconds (long)                            *
     * EXPORT: days                                             *
     * ASSERTION: returns days                                  *
     ***********************************************************/
@@ -336,7 +336,7 @@ public class Time
     * SUBMODULE: millisecondsToHours                            *
     * Purpose: To get the number of hours from inMilliseconds   *
     * Date: 22/05/2016 9:31pm                                   *
-    * IMPORT: none                                              *
+    * IMPORT: inMilliseconds (long)                             *
     * EXPORT: weeks                                             *
     * ASSERTION: returns hour                                   *
     ************************************************************/
@@ -355,8 +355,8 @@ public class Time
     * SUBMODULE: millisecondsToMinutes                          *
     * Purpose: To get the number of minutes from inMilliseconds * 
     * Date: 22/05/2016 9:31pm                                   *
-    * IMPORT: none                                              *
-    * EXPORT: minutes                                           *
+    * IMPORT: inMilliseconds (long)                             *
+    * EXPORT: minutes (Minutes)                                         *
     * ASSERTION: returns minutes                                *
     ************************************************************/
     private Minutes millisecondsToMinutes(long inMilliseconds)
@@ -373,8 +373,8 @@ public class Time
     * SUBMODULE: millisecondsToSeconds                          *
     * Purpose: To get the number of seconds from inMilliseconds * 
     * Date: 22/05/2016 9:31pm                                   *
-    * IMPORT: none                                              *
-    * EXPORT: seconds                                           *
+    * IMPORT: inMilliseconds (long)                             *
+    * EXPORT: seconds (int)                                     *
     * ASSERTION: returns seconds                                *
     ************************************************************/
     private double millisecondsToSeconds(long inMilliseconds)

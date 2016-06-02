@@ -102,7 +102,7 @@ public class Minutes
     * Date: 22/05/2016 9:31pm                                           *
     * IMPORT: inObj (Object)                                            *
     * EXPORT: same                                                      *
-    * ASSERTION:Two Minutes objects are the same if they have the same     *
+    * ASSERTION:Two Minutes objects are the same if they have the same  *
     *           minutes.                                                *
     ********************************************************************/
     public boolean equals(Object inObj)
@@ -123,16 +123,11 @@ public class Minutes
     * Date: 22/05/2016 9:31pm                                               *                            
     *IMPORT: inMinutes (int)                                                *
     *EXPORT: valid (boolean)                                                *
-    *ASSERTION: inMinutes must be between 0 and 59 (inexlusive)             *
+    *ASSERTION: inMinutes must be between 0 and 59 (inclusive)              *
     ************************************************************************/
     private static boolean validateMinutes(int inMinutes)
     {
-        boolean valid = false;
-        if (inMinutes >= 0 && inMinutes < 60)
-        {
-            valid = true;
-        }
-        return valid;
+        return (inMinutes >= 0 && inMinutes < 60);
     }
 
 }

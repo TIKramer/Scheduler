@@ -23,7 +23,7 @@ public class EventList
      *SUBMODULE: addEvent                                                    *
      * Purpose: To add an event to the events array                          *
      * Date: 22/05/2016 9:31pm                                               *                            
-     *IMPORT: none                                                           *
+     *IMPORT: inEvent(UniEvent)                                                          *
      *EXPORT: none                                                           *
      *ASSERTION:                                                             *
      ************************************************************************/
@@ -53,7 +53,7 @@ public class EventList
         }
     }
     /************************************************************************
-     *SUBMODULE: addEvent                                                    *
+     *SUBMODULE: displayEvents                                                    *
      * Purpose: To display all items in the event array                      *
      * Date: 22/05/2016 9:31pm                                               *                            
      *IMPORT: none                                                           *
@@ -66,7 +66,7 @@ public class EventList
 
         for (int i = 0; i < events.length; i++)
         {
-            if (!(events[i] == null))
+            if (events[i] != null)
             {
                 System.out.println(events[i]);
             }
@@ -92,12 +92,12 @@ public class EventList
                 {
 
                     LectureEvent event = (LectureEvent) events[i];
-                    event.printAlert();
+                    System.out.println(event.printAlert());
                 }
                 else if (events[i] instanceof TutorialEvent)
                 {
                     TutorialEvent event = (TutorialEvent) events[i];
-                    event.printAlert();
+                    System.out.println(event.printAlert());
                 }
             }
         }

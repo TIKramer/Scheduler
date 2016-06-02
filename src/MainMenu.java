@@ -4,7 +4,7 @@ import java.util.*;
  * Author: Thomas Kramer                                                   *
  * Purpose: The MainMenu of the program allows the user to make choices and*
  *          interact with the program                                      *
- * Date: 15/04/2016 3:23pm                                                 *
+ * Date: 22/05/2016 9:31pm                                                 *
  **************************************************************************/
 public class MainMenu
 {
@@ -25,10 +25,10 @@ public class MainMenu
         input = new UserInput();
     }
 
-    //PRIVATE SUBMODULES:
+ 
     /************************************************************************
     *SUBMODULE: mainMenu                                                    *
-    * Purpose: A Main Menu in console that display options to the user      *
+    * Purpose: A Main Menu in console that displays options to the user     *
     * Date: 22/05/2016 9:31pm                                               *                            
     *IMPORT: none                                                           *
     *EXPORT: none                                                           *
@@ -72,7 +72,7 @@ public class MainMenu
 
     /************************************************************************
     *SUBMODULE: addEventMenu                                                *
-    * Purpose: A Main Menu in console that display options to the user      *
+    * Purpose: A Menu in console that display options to the user           *
     *          for adding a new event or returning to the main menu         *
     * Date: 22/05/2016 9:31pm                                               *                            
     *IMPORT: none                                                           *
@@ -137,9 +137,9 @@ public class MainMenu
     ************************************************************************/
     private void createTutorialEvent()
     {
-        GregorianCalendar date = generateDate();
         String unit = input.readString("Please enter the unit for this event:");
         int classroom = input.readInt("Please enter a Classroom number:");
+        GregorianCalendar date = generateDate();
         TutorialEvent event = new TutorialEvent(date, unit, classroom);
         events.addEvent(event);
     }
@@ -157,13 +157,50 @@ public class MainMenu
     private GregorianCalendar generateDate()
     {
         Date getDate = new Date();
-        Hours getHours = new Hours();
-        Minutes getMinutes = new Minutes();
-        boolean validYear = false;
-        boolean validMonth = false;
-        boolean validDay = false;
-        boolean validTime = false;
+        getDate = retriveValidYear(getDate);
+        getDate = retriveValidMonth(getDate);
+        getDate = retriveValidDay(getDate);
 
+        Hours getHours = new Hours(retriveValidHours());
+        Minutes getMinutes = new Minutes(retriveValidMinutes());
+
+        // Month -1 as GregorianCaladar months start from 0 not 1
+        GregorianCalendar date = new GregorianCalendar(getDate.getYear(), (getDate.getMonth() - 1), getDate.getDay(),
+                getHours.getHours(), getMinutes.getMinutes());
+        return date;
+
+    }
+
+    /************************************************************************
+    *SUBMODULE: validateSelection                                           *
+    * Purpose: validates if the user selection is within the max value      *
+    * Date: 22/05/2016 9:31pm                                               *                            
+    *IMPORT: inSelection (int), maxSelctionValue (int)                      *
+    *EXPORT: valid (boolean)                                                *
+    *ASSERTION:                                                             *
+    ************************************************************************/
+    private boolean validateSelection(int inSelection, int maxSelctionValue)
+    {
+        boolean valid = false;
+        if (inSelection >= 0 && inSelection <= maxSelctionValue)
+        {
+            valid = true;
+        }
+        return valid;
+    }
+
+    /*********************************************************************************************
+    *SUBMODULE: retriveValidYear                                                                 *
+    * Purpose: validates if input is a valid year else repeats until valid year is entered       *
+    * Date: 22/05/2016 9:31pm                                                                    *                            
+    *IMPORT: getDate (Date)                                                                      *
+    *EXPORT: getDate (Date)                                                                      *
+    *ASSERTION:                                                                                  *
+    *********************************************************************************************/
+    private Date retriveValidYear(Date getDate)
+    {
+
+        boolean validYear = false;
         while (!validYear)
         {
             int inYear = input.readInt("Please Enter a Year:");
@@ -177,6 +214,22 @@ public class MainMenu
                 System.out.println(e.getMessage());
             }
         }
+        return getDate;
+
+    }
+
+    /*********************************************************************************************
+    *SUBMODULE: retriveValidMonth                                                                *
+    * Purpose: validates if input is a valid month else repeats until valid month is entered     *
+    * Date: 22/05/2016 9:31pm                                                                    *                            
+    *IMPORT: getDate (Date)                                                                      *
+    *EXPORT: getDate (Date)                                                                      *
+    *ASSERTION:                                                                                  *
+    *********************************************************************************************/
+    private Date retriveValidMonth(Date getDate)
+    {
+
+        boolean validMonth = false;
         while (!validMonth)
         {
             int inMonth = input.readInt("Please Enter a Month:");
@@ -190,6 +243,22 @@ public class MainMenu
                 System.out.println(e.getMessage());
             }
         }
+        return getDate;
+
+    }
+
+    /**********************************************************************************************
+     *SUBMODULE: retriveValidDay                                                                  *
+     * Purpose: validates if input is a valid day else repeats until valid day is entered         *
+     * Date: 22/05/2016 9:31pm                                                                    *                            
+     *IMPORT: getDate (Date)                                                                      *
+     *EXPORT: getDate (Date)                                                                      *
+     *ASSERTION:                                                                                  *
+     *********************************************************************************************/
+    private Date retriveValidDay(Date getDate)
+    {
+
+        boolean validDay = false;
         while (!validDay)
         {
             int inDay = input.readInt("Please Enter a Day:");
@@ -203,61 +272,66 @@ public class MainMenu
                 System.out.println(e.getMessage());
             }
         }
-        while (!validTime)
-        {
-            boolean validHours = false;
-            boolean validMinutes = false;
-            while (!validHours)
-            {
-                int inHours = input.readInt("Please Enter the Hours of Event Start Time:");
-                try
-                {
-                    getHours.setHours(inHours);
-                    validHours = true;
-                }
-                catch (IllegalArgumentException e)
-                {
-                    System.out.println(e.getMessage());
-                }
-            }
-            while (!validMinutes)
-            {
-                int inMinutes = input.readInt("Please Enter the Mintutes of Event Start Time:");
-                try
-                {
-                    getMinutes.setMinutes(inMinutes);
-                    validMinutes = true;
-                }
-                catch (IllegalArgumentException e)
-                {
-                    System.out.println(e.getMessage());
-                }
-            }
-            validTime = (validHours && validMinutes);
-        }
-
-        // Month -1 as GregorianCaladar months start from 0 not 1
-        GregorianCalendar date = new GregorianCalendar(getDate.getYear(), (getDate.getMonth() - 1), getDate.getDay(),
-                getHours.getHours(), getMinutes.getMinutes());
-        return date;
+        return getDate;
 
     }
-     /************************************************************************
-     *SUBMODULE: validateSelection                                           *
-     * Purpose: validates if the user selection is within the max value      *
-     * Date: 22/05/2016 9:31pm                                               *                            
-     *IMPORT: inSelection (int), maxSelctionValue (int)                      *
-     *EXPORT: valid (boolean)                                                *
-     *ASSERTION:                                                             *
-     ************************************************************************/
-    private boolean validateSelection(int inSelection, int maxSelctionValue)
+
+    /**********************************************************************************************
+     *SUBMODULE: retriveValidHours                                                                *
+     * Purpose: validates if input is a valid hour else repeats until valid hour is entered       *
+     * Date: 22/05/2016 9:31pm                                                                    *                            
+     *IMPORT: none                                                                     *
+     *EXPORT: getHours (Hours)                                                                      *
+     *ASSERTION:                                                                                  *
+     *********************************************************************************************/
+    private Hours retriveValidHours()
     {
-        boolean valid = false;
-        if (inSelection >= 0 && inSelection <= maxSelctionValue)
+        Hours getHours = new Hours();
+        boolean validHours = false;
+        while (!validHours)
         {
-            valid = true;
+            int inHours = input.readInt("Please Enter the Hours of Event Start Time:");
+            try
+            {
+                getHours.setHours(inHours);
+                validHours = true;
+            }
+            catch (IllegalArgumentException e)
+            {
+                System.out.println(e.getMessage());
+            }
         }
-        return valid;
+        return new Hours(getHours);
+
+    }
+
+    /***************************************************************************************************
+    *SUBMODULE: retriveValidMinutes                                                                    *
+    * Purpose: validates if input is a valid minutes else repeats until valid minutes is entered       *
+    * Date: 22/05/2016 9:31pm                                                                          *                            
+    *IMPORT: getDate (Date)                                                                            *
+    *EXPORT: getDate (Date)                                                                            *
+    *ASSERTION:                                                                                        *
+    ***************************************************************************************************/
+    private Minutes retriveValidMinutes()
+    {
+        Minutes getMinutes = new Minutes();
+        boolean validMinutes = false;
+        while (!validMinutes)
+        {
+            int inMinutes = input.readInt("Please Enter the Mintutes of Event Start Time:");
+            try
+            {
+                getMinutes.setMinutes(inMinutes);
+                validMinutes = true;
+            }
+            catch (IllegalArgumentException e)
+            {
+                System.out.println(e.getMessage());
+            }
+        }
+        return new Minutes(getMinutes);
+
     }
 
 }

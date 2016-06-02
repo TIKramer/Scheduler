@@ -36,8 +36,14 @@ public class TutorialEvent extends UniEvent implements ISchedule
     public TutorialEvent(GregorianCalendar date, String inUnit, int inClassroom)
     {
         super(date, inUnit);
-
+        if(validateClassroom(inClassroom))
+        {
         classroom = inClassroom;
+        }
+        else
+        {
+            throw new IllegalArgumentException("Invalid values classroom must be between 1 and 400");
+        }
     }
 
     /*****************************************************************************
@@ -66,7 +72,14 @@ public class TutorialEvent extends UniEvent implements ISchedule
 
     public void setClassroom(int inClassroom)
     {
+        if(validateClassroom(inClassroom))
+        {
         classroom = inClassroom;
+        }
+        else
+        {
+            throw new IllegalArgumentException("Invalid values classroom must be between 1 and 400");
+        }
     }
 
     //ACCESSORS
@@ -96,7 +109,7 @@ public class TutorialEvent extends UniEvent implements ISchedule
     public String toString()
     {
 
-        return ("This Event is at: " + this.getDateTime().getTime() + "In Classroom: " + classroom + " For Unit: " + this
+        return ("This Event is at: " + this.getDateTime().getTime() + " In Classroom: " + classroom + " For Unit: " + this
                 .getUnit());
     }
 
@@ -110,12 +123,13 @@ public class TutorialEvent extends UniEvent implements ISchedule
     * ASSERTION:                                                        *
     ********************************************************************/
 
-    public void printAlert()
+    public String printAlert()
     {
         GregorianCalendar currentTime = new GregorianCalendar();
         Time timeRemainding = new Time(this.getDateTime(), currentTime);
-        System.out.println("You have a Tutorial in: " + classroom + " for: " + this.getUnit() + " Time Remaining: "
+        String str = ("You have a Tutorial in: " + classroom + " for: " + this.getUnit() + " Time Remaining: "
                 + timeRemainding.toString());
+        return str;
     }
 
     /********************************************************************
@@ -137,5 +151,19 @@ public class TutorialEvent extends UniEvent implements ISchedule
 
         }
         return same;
+    }
+    //PRIVATE SUBMODULES:
+    /************************************************************************
+    *SUBMODULE: validateClassroom                                           *
+    * Purpose: To check if inClassroom is a valid classroom                 *
+    * Date: 22/05/2016 9:31pm                                               *                            
+    *IMPORT: inClassroom (int)                                              *
+    *EXPORT: valid (boolean)                                                *
+    *ASSERTION: inClassroom must be between 1 and 400 (inclusive)           *
+    ************************************************************************/   
+    private boolean validateClassroom(int inClassroom)
+    {
+        return (inClassroom >= 1 && inClassroom <= 400);
+        
     }
 }

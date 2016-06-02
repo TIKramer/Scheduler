@@ -121,15 +121,11 @@ public class Hours
     * Date: 22/05/2016 9:31pm                                               *                            
     *IMPORT: inHours (int)                                                  *
     *EXPORT: valid (boolean)                                                *
-    *ASSERTION: inHours must be between 0 and 23 (inexlusive)               *
+    *ASSERTION: inHours must be between 0 and 23 (inclusive)                *
     ************************************************************************/
     private static boolean validateHours(int inHours)
     {
-        boolean valid = false;
-        if (inHours >= 0 && inHours < 24)
-        {
-            valid = true;
-        }
-        return valid;
+       
+        return (inHours >= 0 && inHours < 24);
     }
 }

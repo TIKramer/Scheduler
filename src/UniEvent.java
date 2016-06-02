@@ -35,7 +35,7 @@ public class UniEvent
     public UniEvent(GregorianCalendar inDatetime, String inUnit)
     {
         datetime = (GregorianCalendar) inDatetime.clone();
-        unit = inUnit;
+        unit = new String(inUnit);
     }
 
     /*****************************************************************************
@@ -48,9 +48,9 @@ public class UniEvent
     *****************************************************************************/
 
     public UniEvent(UniEvent inUniEvent)
-    {
+    {     
         datetime = (GregorianCalendar) inUniEvent.getDateTime().clone();
-        unit = inUniEvent.getUnit();
+        unit = new String(inUniEvent.getUnit());
     }
 
     //MUTATORS
@@ -73,7 +73,7 @@ public class UniEvent
     *Date: 22/05/2016 9:31pm                                          *
     *IMPORT: inUnit (String)                                          *
     *EXPORT: none                                                     *
-    *ASSERTION: sets inUnit to setUnit.                               *
+    *ASSERTION: sets unit to inUnit.                                  *
     ******************************************************************/
     public void setUnit(String inUnit)
     {
@@ -105,7 +105,7 @@ public class UniEvent
     ************************************************************/
     public String getUnit()
     {
-        return unit;
+        return new String(unit);
     }
 
     /********************************************************************

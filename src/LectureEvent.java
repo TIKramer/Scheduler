@@ -30,9 +30,9 @@ public class LectureEvent extends UniEvent implements ISchedule
      *EXPORT: address of new UniEvent object                                         *
      *ASSERTION: Creates the object if the imports are valid and FAILS otherwise     *
      ********************************************************************************/
-    public LectureEvent(GregorianCalendar date, String unit, String inLectureHall)
+    public LectureEvent(GregorianCalendar inDatetime, String inUnit, String inLectureHall)
     {
-        super(date, unit);
+        super(inDatetime, inUnit);
 
         lectureHall = inLectureHall;
     }
@@ -91,7 +91,7 @@ public class LectureEvent extends UniEvent implements ISchedule
      ********************************************************************/
     public String toString()
     {
-        return ("This Event is at: " + this.getDateTime().getTime() + "In Classroom: " + lectureHall + " For Unit: " + this
+        return ("This Event is at: " + this.getDateTime().getTime() + "In LectureHall: " + lectureHall + " For Unit: " + this
                 .getUnit());
 
     }
@@ -105,12 +105,13 @@ public class LectureEvent extends UniEvent implements ISchedule
      * EXPORT: none                                                      *
      * ASSERTION:                                                        *
      ********************************************************************/
-    public void printAlert()
+    public String printAlert()
     {
         GregorianCalendar currentTime = new GregorianCalendar();
         Time timeRemainding = new Time(this.getDateTime(), currentTime);
-        System.out.println("You have a Lecture in: " + lectureHall + " for " + this.getUnit() + "Time Remaining: "
+        String str = ("You have a Lecture in: " + lectureHall + " for " + this.getUnit() + "Time Remaining: "
                 + timeRemainding.toString());
+        return str;
 
     }
     
